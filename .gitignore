@@ -55,3 +55,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+./openprocessing
+./processing-group
+./openprocessing-log
