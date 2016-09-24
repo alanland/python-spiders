@@ -59,7 +59,8 @@ class MongoPipline(object):
     def __init__(self):
         self.client = MongoClient('localhost', 27017)
         self.db = self.client.spider_data
-        self.collection = self.db.tencentHr
+        self.collection = self.db['tencentHr']
+        self.collection = self.db['tianqi.shanghai']
 
     def process_item(self, item, spider):
         self.collection.insert_one(dict(item))
