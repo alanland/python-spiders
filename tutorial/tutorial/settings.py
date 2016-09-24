@@ -64,7 +64,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # 'tutorial.pipelines.DuplicatesPipeline': 200,
+    'tutorial.pipelines.DuplicatesPipeline': 200,
     'tutorial.pipelines.JsonWriterPipeline': 300,
     'tutorial.pipelines.MongoPipline': 400
 }
