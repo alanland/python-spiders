@@ -1,15 +1,15 @@
 # coding:utf-8
 
-import urllib2
-import os
-from multiprocessing import Pool
 import bsddb
-
+import os
+import urllib2
+from multiprocessing import Pool
 
 # sketch56494.zip
 # http://www.openprocessing.org/sketch/56533/download/sketch.zip
 target = 'openprocessing'
 db = bsddb.btopen('openprocessing-log/log.db', 'c')
+count = 0
 
 
 def download(number):
@@ -45,6 +45,8 @@ def download10files(number):
     ###
     for i in range(number * 10, number * 10 + 10):
         file_name = 'sketch%s.zip' % i
+        global count
+        count += 1  # todo share variable
         file_path = get_target(i)
         if not os.path.exists(file_path):
             url = 'http://www.openprocessing.org/sketch/%s/download/sketch.zip' % number
@@ -54,13 +56,14 @@ def download10files(number):
                 output.write(http_file.read())
                 output.close()
                 db[file_name] = '0'
-                print('succ %s' % i)
+                print('succ %s %s' % (i, count))
             except:
                 db[file_name] = '1'
-                print('fail %s' % i)
-                ''
+                # print('fail %s' % i)
+                pass
         else:
-            print('pass %s' % i)
+            # print('pass %s' % i)
+            pass
 
 
 def get_target(number, base='processing-group'):
@@ -73,7 +76,7 @@ def get_target(number, base='processing-group'):
 
 
 if __name__ == '__main__':
-    p = Pool(32)
+    p = Pool(320)
     # p.map(download10files, range(0, 1000))  # 1-10,000
     # p.map(download10files, range(1000, 2000))  # 1-10,000
     # p.map(download10files, range(2000, 3000))  # 1-10,000
@@ -89,5 +92,7 @@ if __name__ == '__main__':
         return range(base_number * multi, base_number * multi * 10 + step)
 
     # p.map(download10files, get_range(10))  # 100000-110000
-    for i in (range(10, 20)):
-        p.map(download10files, get_range(11))
+    # for i in (range(10, 11)):
+    # p.map(download10files, get_range(i))
+    # p.map(download10files, get_range(10))
+    p.map(download10files, get_range(11))
